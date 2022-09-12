@@ -228,7 +228,7 @@ Default separator is "\r\n?"
 #### field
 Returns one line (or field) by index
 ```lua
-string field = sstr.lines(string text, string separator, int index)
+string field = sstr.field(string text, string separator, int index)
 ```
 
 Default separator is "\r\n?"
