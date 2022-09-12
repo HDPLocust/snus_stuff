@@ -266,7 +266,7 @@ string concatted = sstr.cat(string text1[, string text2, string text3, ...])
 #### concat
 Same as cat but with separator.
 ```lua
-string concatted = sstr.cat(string text1[, string text2, string text3, ...], string separator)
+string concatted = sstr.concat(string text1[, string text2, string text3, ...], string separator)
 ```
 
 
