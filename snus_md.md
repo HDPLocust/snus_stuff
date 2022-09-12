@@ -2,7 +2,7 @@
 # snus_md
 ### This module is used for extraction MD inlines from Lua scripts.
 #### Usage:
-`lua -i myscript.lua [-i anotherscript.lua, ...] -o README.md`
+`lua snus_md.lua -i myscript.lua [-i anotherscript.lua, ...] -o README.md`
 
 This will extract all md blocks
 ```
