@@ -188,7 +188,7 @@ table slice = sstring.slice(string text, int startindex, int endindex, string se
 
 
 #### bfind
-Sonething like "%b" modifier in string patterns but little more complex.
+Something like "%b" modifier in string patterns but little more complex.
 
 ```lua
 string found, startindex, endindex = sstring.bfind(string header, string footer[, int offset, bool exclude_bounds, bool header_and_footer_as_plain_text])
