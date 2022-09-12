@@ -1,0 +1,1 @@
+luajit snus_md.lua -i %1 -o %~n1.md
