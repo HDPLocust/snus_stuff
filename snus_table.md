@@ -138,7 +138,7 @@ Tip: `table.insert(tbl, stbl.binsearch(tbl, value), value)`
 #### binsert
 Searches nearest larger element to given in sorted arrays
 ```lua
-stbl.binsearch(table tbl, value value[, func comparefunction])
+stbl.binsert(table tbl, value value[, func comparefunction])
 ```
 
 Compare function reveives current table element, value to insert and current array index.
