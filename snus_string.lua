@@ -1,6 +1,7 @@
 --[[!MD
 # snus_string
-## String library. Contains a lot of borrowed code.
+## String library. 
+Contains a lot of borrowed code.
 ### Usage:
 
 ```lua
@@ -541,7 +542,7 @@ end
 
 --[=[!MD
 #### bfind
-Sonething like "%b" modifier in string patterns but little more complex.
+Something like "%b" modifier in string patterns but little more complex.
 
 ```lua
 string found, startindex, endindex = sstring.bfind(string header, string footer[, int offset, bool exclude_bounds, bool header_and_footer_as_plain_text])
@@ -631,7 +632,7 @@ end
 #### field
 Returns one line (or field) by index
 ```lua
-string field = sstr.lines(string text, string separator, int index)
+string field = sstr.field(string text, string separator, int index)
 ```
 
 Default separator is "\r\n?"
@@ -703,7 +704,7 @@ end
 #### concat
 Same as cat but with separator.
 ```lua
-string concatted = sstr.cat(string text1[, string text2, string text3, ...], string separator)
+string concatted = sstr.concat(string text1[, string text2, string text3, ...], string separator)
 ```
 ]]
 function snus_string:concat(...)

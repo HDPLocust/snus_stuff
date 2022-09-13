@@ -1,6 +1,7 @@
 
 # snus_string
-## String library. Contains a lot of borrowed code.
+## String library. 
+Contains a lot of borrowed code.
 ### Usage:
 
 ```lua

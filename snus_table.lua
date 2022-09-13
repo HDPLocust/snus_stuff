@@ -206,6 +206,71 @@ function snus_table.merge(a, b)
 end
 
 --[[!MD
+#### binsearch
+Searches nearest larger element to given in sorted arrays
+```lua
+int index, value element = stbl.binsearch(table tbl, value value)
+```
+
+If you want to keep array sorted, you may `table.insert` your value to given index.
+Tip: `table.insert(tbl, stbl.binsearch(tbl, value), value)`
+]]
+local insert = table.insert
+local floor = math.floor
+function snus_table.binsearch(tbl, value)
+	local len = #tbl
+	local a, b = 1, len
+	local diff = b - a
+	while diff > 8 do
+		local m = floor(a + diff * .5)
+		if tbl[m] > value then
+			b = m
+		else
+			a = m
+		end
+		diff = b - a
+	end
+	
+	for i = a, b do
+		if tbl[i] >= value then
+			return i, tbl[i]
+		end
+	end
+	return len, tbl[len]
+end
+
+--[[!MD
+#### binsert
+Searches nearest larger element to given in sorted arrays
+```lua
+stbl.binsearch(table tbl, value value[, func comparefunction])
+```
+
+Compare function reveives current table element, value to insert and current array index.
+]]
+function snus_table.binsert(tbl, value, func)
+	local len = #tbl
+	local a, b = 1, len
+	local diff = b - a
+	while diff > 8 do
+		local m = floor(a + diff * .5)
+		if func and func(tbl[m], value, m) or tbl[m] >= value then
+			b = m
+		else
+			a = m
+		end
+		diff = b - a
+	end
+	
+	for i = a, b do
+		if func and func(tbl[i], value, m) or tbl[i] >= value then
+			return insert(tbl, i, value)
+		end
+	end
+	return insert(tbl, len, value)
+end
+
+--[[!MD
 #### import
 Adds all table function from library to `table` table.
 ```lua

@@ -125,6 +125,25 @@ out = stbl.merge(tblA, tblB)
 The first table dominates.
 
 
+#### binsearch
+Searches nearest larger element to given in sorted arrays
+```lua
+int index, value element = stbl.binsearch(table tbl, value value)
+```
+
+If you want to keep array sorted, you may `table.insert` your value to given index.
+Tip: `table.insert(tbl, stbl.binsearch(tbl, value), value)`
+
+
+#### binsert
+Searches nearest larger element to given in sorted arrays
+```lua
+stbl.binsearch(table tbl, value value[, func comparefunction])
+```
+
+Compare function reveives current table element, value to insert and current array index.
+
+
 #### import
 Adds all table function from library to `table` table.
 ```lua
