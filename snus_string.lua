@@ -397,6 +397,7 @@ local function _fastsub(self, a, b)
 end
 
 function snus_string:usub(a, b)
+	if a == 0 then a = 1 end
 	if a > 0 and (not b or (b > 0 and a <= b)) then
 		return _fastsub(self, a, b)
 	end
