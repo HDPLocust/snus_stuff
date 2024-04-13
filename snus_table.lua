@@ -410,18 +410,12 @@ end
 #### import
 Adds all table function from library to `table` table.
 ```lua
-require("snus_table").import([bool redefine])
+require("snus_table").import()
 ```
-
-If redefine is set to true, the library will be forced to be imported with functions override.
-Otherwise, it will raise an error for already existing functions.
 ]]
 local table = _G.table
 function snus_table.import(redefine)
 	for k, v in pairs(snus_table) do
-		if table[k] and table[k] ~= v then
-			error("Redefining of [", k, "] string method")
-		end
 		table[k] = v
 	end
 	

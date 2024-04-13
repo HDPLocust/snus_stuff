@@ -220,8 +220,5 @@ Compare function reveives current table element, value to insert and current arr
 #### import
 Adds all table function from library to `table` table.
 ```lua
-require("snus_table").import([bool redefine])
+require("snus_table").import()
 ```
-
-If redefine is set to true, the library will be forced to be imported with functions override.
-Otherwise, it will raise an error for already existing functions.
