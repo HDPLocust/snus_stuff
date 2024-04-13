@@ -22,14 +22,128 @@ require("snus_table").import([bool skip_redefinition])
 In that case, all function can be called from table library:
 
 ```lua
-mystring = "abcdef"
 output = table.filter({1, 2, 3, 4}, function(v) return v % 2 == 0 end)
 ```
 
 (be sure, it will raises error on redefinition of existed methods from other libraries.
 ]]
 
+
 local snus_table = {}
+snus_table.__index = snus_table
+snus_table.unpack = _G.unpack or _G.table.unpack
+
+for k, v in pairs(_G.table) do
+	snus_table[k] = v
+end
+
+--[[!MD
+#### arr
+Creates new array that have all functions of table and snus_table library as methods. Returns first arg passed or new empty table.
+```lua
+table arr = stbl.arr([table tbl])
+--> arr == tbl --> true
+```
+
+```lua
+myArray = stbl.arr{10, 20, 30, 40}
+
+myArray:insert(20, 4)
+--> myArray = {10, 20, 30, 20, 40}
+
+myArray:map(function(v) return v + 1 end)
+
+for i, v in myArray:ripairs(4) do
+	print(i, v)
+end
+--> 4  21
+--> 3  31
+--> 2  21
+--> 1  11
+```
+]]
+function snus_table.arr(tbl)
+	return setmetatable(tbl or {}, snus_table)
+end
+
+--[[!MD
+#### keys
+Returns list of table keys (include string ones).
+
+```lua
+table keys = stbl.keys(table tbl)
+```
+]]
+function snus_table.keys(tbl)
+	assert(type(tbl) == "table", "Arg #1 error: table expected, got " .. type(tbl))
+	local output = {}
+	local i = 0
+	for k, v in pairs(tbl) do
+		i = i + 1
+		output[i] = k
+	end
+	return output
+end
+
+--[[!MD
+#### values
+Returns list of all table values.
+
+```lua
+table values = stbl.values(table tbl)
+```
+]]
+function snus_table.values(tbl)
+	assert(type(tbl) == "table", "Arg #1 error: table expected, got " .. type(tbl))
+	local output = {}
+	local i = 0
+	for k, v in pairs(tbl) do
+		i = i + 1
+		output[i] = v
+	end
+	return output
+end
+
+--[[!MD
+#### reverse
+Regular array reverse.
+
+```lua
+table out = stbl.reverse(table tbl)
+--> out == tbl --> true
+```
+]]
+function snus_table.reverse(tbl)
+	assert(type(tbl) == "table", "Arg #1 error: table expected, got " .. type(tbl))
+	local len = #tbl
+	for i = 1, len / 2 do
+		local ii = len - i + 1
+		tbl[i], tbl[ii] =	tbl[ii], tbl[i]
+	end
+	return tbl
+end
+
+--[[!MD
+#### slice
+Returns slice of array table, original table is unchanged
+```lua
+table out = stbl.slice(table tbl, int start[, int end, bool unpack_result])
+```
+]]
+function snus_table.slice(tbl, i, j, unp)
+	i, j = i or 1, j or #tbl
+	i = i < 0 and #tbl + i     or i
+	j = j < 0 and #tbl + j + 1 or j
+
+	local out = {}
+	for i = i, j do
+		out[#out + 1] = tbl[i]
+	end
+	if unp then
+		return snus_table.unpack(out) or out
+	end
+	return out
+end
 
 --[[!MD
 #### sipairs
@@ -80,7 +194,6 @@ end
 
 function snus_table.ripairs(tbl, index)
 	assert(type(tbl) == "table", "Arg #1 error: table expected, got " .. type(tbl))
-
 	index = index or #tbl
 	index = index > 0 and index - 1 or index
 	return ripairs_next, tbl, index % #tbl + 2
@@ -176,10 +289,9 @@ function snus_table.copy(src)
 	return out
 end
 
-
 --[[!MD
 #### merge
-Merge of two tables (not arrays or dicts)
+Merge of two tables (arrays or/and dicts)
 ```lua
 table output = stbl.merge(table a, table b)
 ```
@@ -203,6 +315,30 @@ function snus_table.merge(a, b)
 		out[k] = v
 	end
 	return out
+end
+
+--[[!MD
+#### update
+Update a table with content of another table
+```lua
+table output = stbl.update(table a, table b)
+```
+
+Example:
+```lua
+tblA = {foo = "foo", bar = "bar"}
+tblB = {foo = "FOO", foobar = "foobar"}
+
+out = stbl.update(tblA, tblB)
+--> out {foo = "FOO", bar = "bar", foobar = "foobar"}
+--> out == tblA --> true
+```
+]]
+function snus_table.update(a, b)
+	for k, v in pairs(b) do
+		a[k] = v
+	end
+	return a
 end
 
 --[[!MD
@@ -284,11 +420,13 @@ local table = _G.table
 function snus_table.import(redefine)
 	for k, v in pairs(snus_table) do
 		if table[k] and table[k] ~= v then
-			if not redefine then
-				error("Redefining of [", k, "] string method")
-			end
+			error("Redefining of [", k, "] string method")
 		end
 		table[k] = v
+	end
+	
+	function snus_table.arr(tbl)
+		return setmetatable(tbl or {}, table)
 	end
 end
 

@@ -22,11 +22,67 @@ require("snus_table").import([bool skip_redefinition])
 In that case, all function can be called from table library:
 
 ```lua
-mystring = "abcdef"
 output = table.filter({1, 2, 3, 4}, function(v) return v % 2 == 0 end)
 ```
 
 (be sure, it will raises error on redefinition of existed methods from other libraries.
+
+
+#### arr
+Creates new array that have all functions of table and snus_table library as methods. Returns first arg passed or new empty table.
+```lua
+table arr = stbl.arr([table tbl])
+--> arr == tbl --> true
+```
+
+```lua
+myArray = stbl.arr{10, 20, 30, 40}
+
+myArray:insert(20, 4)
+--> myArray = {10, 20, 30, 20, 40}
+
+myArray:map(function(v) return v + 1 end)
+
+for i, v in myArray:ripairs(4) do
+	print(i, v)
+end
+--> 4  21
+--> 3  31
+--> 2  21
+--> 1  11
+```
+
+
+#### keys
+Returns list of table keys (include string ones).
+
+```lua
+table keys = stbl.keys(table tbl)
+```
+
+
+#### values
+Returns list of all table values.
+
+```lua
+table values = stbl.values(table tbl)
+```
+
+
+#### reverse
+Regular array reverse.
+
+```lua
+table out = stbl.reverse(table tbl)
+--> out == tbl --> true
+```
+
+
+#### slice
+Returns slice of array table, original table is unchanged
+```lua
+table out = stbl.slice(table tbl, int start[, int end, bool unpack_result])
+```
 
 
 #### sipairs
@@ -109,7 +165,7 @@ out = stbl.copy(tbl)
 
 
 #### merge
-Merge of two tables (not arrays or dicts)
+Merge of two tables (arrays or/and dicts)
 ```lua
 table output = stbl.merge(table a, table b)
 ```
@@ -123,6 +179,23 @@ out = stbl.merge(tblA, tblB)
 --> out {foo = "foo", bar = "bar", foobar = "foobar"}
 ```
 The first table dominates.
+
+
+#### update
+Update a table with content of another table
+```lua
+table output = stbl.update(table a, table b)
+```
+
+Example:
+```lua
+tblA = {foo = "foo", bar = "bar"}
+tblB = {foo = "FOO", foobar = "foobar"}
+
+out = stbl.update(tblA, tblB)
+--> out {foo = "FOO", bar = "bar", foobar = "foobar"}
+--> out == tblA --> true
+```
 
 
 #### binsearch
