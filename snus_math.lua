@@ -20,10 +20,8 @@ require("snus_math").import([bool skip_redefinition])
 ```
 
 In that case, all function can be called from math library:
-
 ```lua
-mystring = "abcdef"
-output = smath.clamp(10, 2, 7)
+output = math.clamp(10, 2, 7)
 ```
 
 (be sure, it will raises error on redefinition of existed methods from other libraries.
