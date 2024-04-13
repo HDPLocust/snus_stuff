@@ -31,7 +31,6 @@ output = math.clamp(10, 2, 7)
 Returns number trimmed between lower and upper numbers
 ```lua
 number result = smath.clamp(number value, number lower, number upper)
---> number
 ```
 
 
@@ -39,7 +38,6 @@ number result = smath.clamp(number value, number lower, number upper)
 When the upper limit is exceeded, number is transferred to the lower limit and vice versa.
 ```lua
 number result = smath.loopf(number value, number lower, number upper)
---> number
 ```
 
 
@@ -48,7 +46,6 @@ Cyclic normalization of the number to the specified limits.
 The default lower bound is 1.
 ```lua
 number result = smath.loop(number value[, number lower], number upper)
---> number
 ```
 
 
@@ -56,7 +53,6 @@ number result = smath.loop(number value[, number lower], number upper)
 Returns result of linear interpolation between start, finish by factor t.
 ```lua
 number result = smath.lerp(number start, number finish, number t)
---> number
 ```
 
 
@@ -64,7 +60,6 @@ number result = smath.lerp(number start, number finish, number t)
 Returns number rounded to nearest int
 ```lua
 number result = smath.round(number value)
---> number
 ```
 
 
@@ -72,7 +67,6 @@ number result = smath.round(number value)
 Returns 1, if number is positive, 0 if number is negative, or 0 if number is 0.
 ```lua
 number result = smath.sign(number value)
---> number
 ```
 
 
@@ -80,7 +74,6 @@ number result = smath.sign(number value)
 Returns fractional part of number.
 ```lua
 number result = smath.fract(number value)
---> number
 ```
 
 
@@ -88,7 +81,6 @@ number result = smath.fract(number value)
 Checks number is NaN.
 ```lua
 boolean result = smath.isnan(number value)
---> boolean
 ```
 
 
@@ -96,7 +88,6 @@ boolean result = smath.isnan(number value)
 Checks number is inf.
 ```lua
 boolean result = smath.isinf(number value)
---> boolean
 ```
 
 
@@ -104,7 +95,6 @@ boolean result = smath.isinf(number value)
 Checks number is even.
 ```lua
 boolean result = smath.iseven(number value)
---> boolean
 ```
 Thanks to the presence of this function, I expect at least 10k stars on Github and 2m of forks.
 

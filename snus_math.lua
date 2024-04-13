@@ -40,7 +40,6 @@ local floor, ceil = math.floor, math.ceil
 Returns number trimmed between lower and upper numbers
 ```lua
 number result = smath.clamp(number value, number lower, number upper)
---> number
 ```
 ]]
 function snus_math.clamp(value, lower, upper)
@@ -52,7 +51,6 @@ end
 When the upper limit is exceeded, number is transferred to the lower limit and vice versa.
 ```lua
 number result = smath.loopf(number value, number lower, number upper)
---> number
 ```
 ]]
 function snus_math.loopf(value, lower, upper)
@@ -65,7 +63,6 @@ Cyclic normalization of the number to the specified limits.
 The default lower bound is 1.
 ```lua
 number result = smath.loop(number value[, number lower], number upper)
---> number
 ```
 ]]
 function snus_math.loop(value, lower, upper)
@@ -79,7 +76,6 @@ end
 Returns result of linear interpolation between start, finish by factor t.
 ```lua
 number result = smath.lerp(number start, number finish, number t)
---> number
 ```
 ]]
 function snus_math.lerp(start, finish, t)
@@ -91,7 +87,6 @@ end
 Returns number rounded to nearest int
 ```lua
 number result = smath.round(number value)
---> number
 ```
 ]]
 function snus_math.round(value)
@@ -104,7 +99,6 @@ end
 Returns 1, if number is positive, 0 if number is negative, or 0 if number is 0.
 ```lua
 number result = smath.sign(number value)
---> number
 ```
 ]]
 function snus_math.sign(value)
@@ -116,7 +110,6 @@ end
 Returns fractional part of number.
 ```lua
 number result = smath.fract(number value)
---> number
 ```
 ]]
 function snus_math.fract(value)
@@ -128,7 +121,6 @@ end
 Checks number is NaN.
 ```lua
 boolean result = smath.isnan(number value)
---> boolean
 ```
 ]]
 function snus_math.isnan(value)
@@ -140,7 +132,6 @@ end
 Checks number is inf.
 ```lua
 boolean result = smath.isinf(number value)
---> boolean
 ```
 ]]
 function snus_math.isinf(value)
@@ -152,7 +143,6 @@ end
 Checks number is even.
 ```lua
 boolean result = smath.iseven(number value)
---> boolean
 ```
 Thanks to the presence of this function, I expect at least 10k stars on Github and 2m of forks.
 ]]
