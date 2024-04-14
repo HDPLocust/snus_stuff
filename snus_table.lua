@@ -216,7 +216,7 @@ end
 --> out {11, 21, 31}
 
 tbl = {10, 20, 30}
-out = stbl.map(tbl, function(v, i) return v + 1 end)
+out = stbl.map(tbl, function(v, i) return v + 1 end, true)
 --> tbl {11, 21, 31}
 --> out == tbl --> true
 ```
