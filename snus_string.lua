@@ -491,7 +491,7 @@ Examples:
 splitted = sstring.split("Hello,world")
 --> {"Hello", "World"}
 
-a, b = sstring.split(string "Hello world", " ", true)
+a, b = sstring.split("Hello world", " ", true)
 --> a == "Hello"; b == "world"
 
 splitted = sstring.split("   ❤️Hello   ❤️ world❤️  !", "%s*❤️%s*", false, true)
