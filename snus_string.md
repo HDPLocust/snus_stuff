@@ -63,7 +63,7 @@ Contains sstring.charpattern key "[%z\1-\x7F\xC2-\xF4][\x80-\xBF]*" which is a t
 Unicode character iterator
 ```lua
 for int endbyte, string u8char in sstr.uchars(string u8text) do
-  print(endbyte, char)
+  print(endbyte, u8char)
 end
 ```
 
@@ -106,7 +106,7 @@ Default prefix is "\u".
 Returns codepoint number by given index.
 
 ```lua
-int codepoint = sstr.ubyte(int index)`
+int codepoint = sstr.ubyte(u8string, int index)`
 ```
 
 
@@ -167,8 +167,9 @@ string u8sanitazed = sstring.usanitize(string u8text)
 
 Returns table of string or several strings from given string
 ```lua
-table splitted = sstring.split(string text[, string separator, bool unpack_result])
+table splitted = sstring.split(string text[, string separator, bool unpack_result, bool isregex])
 ```
+Tis function is optimized for performance, so default separator should be plain text, but it is possible to specify the interpretation of the separator as a regex using isregex arg.
 
 Examples:
 ```lua
@@ -177,6 +178,10 @@ splitted = sstring.split("Hello,world")
 
 a, b = sstring.split(string "Hello world", " ", true)
 --> a == "Hello"; b == "world"
+
+splitted = sstring.split("   ❤️Hello   ❤️ world❤️  !", "%s*❤️%s*", false, true)
+--> {"", Hello", "world", "!"}
+
 ```
 
 
@@ -223,7 +228,7 @@ for string line, table info in sstr.lines(string text[, string separator]) do
 end
 ```
 
-Default separator is "\r\n?"
+Default separator is "\r?\n"
 
 
 #### field
@@ -232,7 +237,7 @@ Returns one line (or field) by index
 string field = sstr.field(string text, string separator, int index)
 ```
 
-Default separator is "\r\n?"
+Default separator is "\r?\n"
 
 
 #### trim

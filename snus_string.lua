@@ -176,7 +176,7 @@ Contains sstring.charpattern key "[%z\1-\x7F\xC2-\xF4][\x80-\xBF]*" which is a t
 Unicode character iterator
 ```lua
 for int endbyte, string u8char in sstr.uchars(string u8text) do
-  print(endbyte, char)
+  print(endbyte, u8char)
 end
 ```
 
@@ -297,7 +297,7 @@ end
 Returns codepoint number by given index.
 
 ```lua
-int codepoint = sstr.ubyte(int index)`
+int codepoint = sstr.ubyte(u8string, int index)`
 ```
 ]]
 function snus_string:ubyte(index)
@@ -397,7 +397,6 @@ local function _fastsub(self, a, b)
 end
 
 function snus_string:usub(a, b)
-	if a == 0 then a = 1 end
 	if a > 0 and (not b or (b > 0 and a <= b)) then
 		return _fastsub(self, a, b)
 	end
@@ -483,8 +482,9 @@ end
 
 Returns table of string or several strings from given string
 ```lua
-table splitted = sstring.split(string text[, string separator, bool unpack_result])
+table splitted = sstring.split(string text[, string separator, bool unpack_result, bool isregex])
 ```
+Tis function is optimized for performance, so default separator should be plain text, but it is possible to specify the interpretation of the separator as a regex using isregex arg.
 
 Examples:
 ```lua
@@ -493,19 +493,23 @@ splitted = sstring.split("Hello,world")
 
 a, b = sstring.split(string "Hello world", " ", true)
 --> a == "Hello"; b == "world"
+
+splitted = sstring.split("   ❤️Hello   ❤️ world❤️  !", "%s*❤️%s*", false, true)
+--> {"", Hello", "world", "!"}
+
 ```
 ]]
-function snus_string:split(sep, unp)
+function snus_string:split(sep, unp, regex)
 	sep = sep or ","
-
+	local lsep = #sep
 	local out = {}
-	local a, b, i, _ = 1, #self, 1
-	_, b = self:find(sep)
+	local a, b, c, i, _ = 1, #self, nil, 1
+	c, b = self:find(sep, 1, not regex)
 
 	while a and b do
-		out[i] = self:sub(a, b - 1)
+		out[i] = self:sub(a, c - 1)
 		a, i = b + 1, i + 1
-		_, b = self:find(sep, a)
+		c, b = self:find(sep, a, not regex)
 	end
 
 	out[i] = self:sub(a)
@@ -600,7 +604,7 @@ for string line, table info in sstr.lines(string text[, string separator]) do
 end
 ```
 
-Default separator is "\r\n?"
+Default separator is "\r?\n"
 ]]
 local function str_lines(str, args)
 	if str.str then -- lua reverses args after string:lines but not reverses after str_lines
@@ -624,7 +628,7 @@ local function str_lines(str, args)
 end
 
 function snus_string:lines(sep)
-	local args = {str = self, index = 0, sep = sep or "\r\n?"}
+	local args = {str = self, index = 0, sep = sep or "\r?\n"}
 
 	return str_lines, args
 end
@@ -636,7 +640,7 @@ Returns one line (or field) by index
 string field = sstr.field(string text, string separator, int index)
 ```
 
-Default separator is "\r\n?"
+Default separator is "\r?\n"
 ]]
 function snus_string:field(sep, index)
 	local curr = 0
@@ -746,4 +750,12 @@ function snus_string.import(redefine)
 	end
 end
 
-return snus_string
+if ... then
+	return snus_string
+end
+
+if package.config:sub(1, 1) == "\\" then
+	os.execute("chcp 65001")
+end
+
+print(snus_string.uchar(0x042B))
