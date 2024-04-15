@@ -196,6 +196,7 @@ end
 function snus_string:uchars()
 	return utf8_next, self, 0
 end
+local uchars = snus_string.uchars
 
 --[[!MD
 #### uoffsets
@@ -220,6 +221,7 @@ end
 function snus_string:uoffsets()
 	return _utf8_next, self, 0
 end
+local uoffsets = snus_string.uoffsets
 
 --[[!MD
 #### uencode
@@ -265,7 +267,7 @@ end
 function snus_string:uencode(prefix)
 	prefix = prefix or "\\u"
 	local out = {}
-	for i, c in snus_string.uchars(self) do
+	for i, c in uchars(self) do
 		local code = utf8_to_unicode(c)
 		insert(out, prefix)
 		insert(out, code)
@@ -301,7 +303,7 @@ int codepoint = sstr.ubyte(u8string, int index)`
 ```
 ]]
 function snus_string:ubyte(index)
-	local c = snus_string.uindex(self, index)
+	local c = uindex(self, index)
 	return utf8_to_unicode(c)
 end
 
@@ -327,11 +329,12 @@ Non utf8 chars is skipped.
 ]]
 function snus_string:ulen()
 	local len = 0
-	for _ in snus_string.uoffsets(self) do
+	for _ in uoffsets(self) do
 		len = len + 1
 	end
 	return len
 end
+local ulen = snus_string.ulen
 
 --[[!MD
 #### ureverse
@@ -346,7 +349,7 @@ Non utf8 chars is skipped.
 function snus_string:ureverse()
 	if #self > 500 then
 		local out, len = {}, 1
-		for _, c in snus_string.uchars(self) do
+		for _, c in uchars(self) do
 			out[len] = c
 			len = len + 1
 		end
@@ -358,7 +361,7 @@ function snus_string:ureverse()
 	end
 
 	local out = ""
-	for _, c in snus_string.uchars(self) do
+	for _, c in uchars(self) do
 		out = c .. out
 	end
 	return out
@@ -377,7 +380,7 @@ Should work exactly like string.sub but for utf8 characters
 local function _fastsub(self, a, b)
 	local i = 1
 	local start
-	for oa, ob in snus_string.uoffsets(self) do
+	for oa, ob in uoffsets(self) do
 		if i == a then
 			if not b then
 				return self:sub(oa)
@@ -401,7 +404,7 @@ function snus_string:usub(a, b)
 		return _fastsub(self, a, b)
 	end
 
-	local len = snus_string.ulen(self)
+	local len = ulen(self)
 	b = b or len
 
 	if a < 0 then
@@ -414,7 +417,7 @@ function snus_string:usub(a, b)
 
 	local i = 1
 	local offstart
-	for oa, ob in snus_string.uoffsets(self) do
+	for oa, ob in uoffsets(self) do
 		if i == a then
 			offstart = oa
 		end
@@ -438,7 +441,7 @@ string u8char, int startoffset, int endbyteoffset = sstring.uindex(string u8text
 ]]
 function snus_string:uindex(index)
 	if index < 0 then
-		local len = snus_string.ulen(self)
+		local len = ulen(self)
 		index = len + index + 1
 		if index < 0 or index > len then
 			return ""
@@ -451,7 +454,7 @@ function snus_string:uindex(index)
 	end
 
 	local i = 0
-	for a, b in snus_string.uoffsets(self) do
+	for a, b in uoffsets(self) do
 		i = i + 1
 		if i >= index then
 			return self:sub(a, b), a, b
@@ -459,6 +462,7 @@ function snus_string:uindex(index)
 	end
 	return "", -1, -1
 end
+local uindex = snus_string.uindex
 
 --[[!MD
 #### usanitize
@@ -469,7 +473,7 @@ string u8sanitazed = sstring.usanitize(string u8text)
 ]]
 function snus_string:usanitize()
 	local out, i = {}, 0
-	for _, uchar in snus_string.uchars(self) do
+	for _, uchar in uchars(self) do
 		i = i + 1
 		out[i] = uchar
 	end
@@ -519,6 +523,7 @@ function snus_string:split(sep, unp, regex)
 	end
 	return out
 end
+local split = snus_string.split
 
 --[[!MD
 #### slice
@@ -529,7 +534,7 @@ table slice = sstring.slice(string text, int startindex, int endindex, string se
 ```
 ]]
 function snus_string:slice(i, j, sep, unp)
-	local list = snus_string.split(self, sep)
+	local list = split(self, sep)
 
 	i, j = i or 1, j or #list
 	i = i < 0 and #list + i     or i
