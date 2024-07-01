@@ -169,7 +169,7 @@ Returns table of string or several strings from given string
 ```lua
 table splitted = sstring.split(string text[, string separator, bool unpack_result, bool isregex])
 ```
-Tis function is optimized for performance, so default separator should be plain text, but it is possible to specify the interpretation of the separator as a regex using isregex arg.
+This function is optimized for performance, so default separator should be plain text, but it is possible to specify the interpretation of the separator as a regex using isregex arg.
 
 Examples:
 ```lua
@@ -190,6 +190,14 @@ splitted = sstring.split("   ❤️Hello   ❤️ world❤️  !", "%s*❤️%s*
 Returns one or several chunks of separate formatted string
 ```lua
 table slice = sstring.slice(string text, int startindex, int endindex, string separator[, bool unpack_result])
+```
+
+
+#### swap
+
+Returns a string in which all occurrences of [from] are replaced by [to] strings. Works like string.gsub but without pattern matchmaking.
+```lua
+string swapped = sstring.swap(string text, string from, string to)
 ```
 
 

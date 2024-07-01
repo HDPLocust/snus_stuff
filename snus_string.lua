@@ -488,7 +488,7 @@ Returns table of string or several strings from given string
 ```lua
 table splitted = sstring.split(string text[, string separator, bool unpack_result, bool isregex])
 ```
-Tis function is optimized for performance, so default separator should be plain text, but it is possible to specify the interpretation of the separator as a regex using isregex arg.
+This function is optimized for performance, so default separator should be plain text, but it is possible to specify the interpretation of the separator as a regex using isregex arg.
 
 Examples:
 ```lua
@@ -548,6 +548,29 @@ function snus_string:slice(i, j, sep, unp)
 		return unpack(out) or out
 	end
 	return out
+end
+
+--[[!MD
+#### swap
+
+Returns a string in which all occurrences of [from] are replaced by [to] strings. Works like string.gsub but without pattern matchmaking.
+```lua
+string swapped = sstring.swap(string text, string from, string to)
+```
+]]
+function snus_string.swap(text, from, to)
+	local out = {}
+	local last = 0
+	local a, b = text:find(from, 0, true)
+	while a do
+		out[#out + 1] = text:sub(last, a - 1)
+		out[#out + 1] = to
+		last = b + 1
+		a, b = text:find(from, last, true)
+	end
+	
+	out[#out + 1] = text:sub(last)
+	return table.concat(out)
 end
 
 --[=[!MD
@@ -637,6 +660,7 @@ function snus_string:lines(sep)
 
 	return str_lines, args
 end
+local lines = snus_string.lines
 
 --[[!MD
 #### field
@@ -649,7 +673,7 @@ Default separator is "\r?\n"
 ]]
 function snus_string:field(sep, index)
 	local curr = 0
-	for line in snus_string.lines(self, sep) do
+	for line in lines(self, sep) do
 		curr = curr + 1
 		if curr == index then return line end
 	end
