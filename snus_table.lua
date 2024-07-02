@@ -67,6 +67,22 @@ function snus_table.arr(tbl)
 end
 
 --[[!MD
+#### index
+Returns index of table value if exists, false otherwise.
+
+```lua
+int index = stbl.index(table tbl, any value)
+```
+]]
+function snus_table.index(tbl, value)
+	assert(type(tbl) == "table", "Arg #1 error: table expected, got " .. type(tbl))
+	for i = 1, #tbl do
+		if tbl[i] == value then return i end
+	end
+	return false
+end
+
+--[[!MD
 #### keys
 Returns list of table keys (include string ones).
 
@@ -233,7 +249,7 @@ end
 
 --[[!MD
 #### filter
-Apply a function to each element of table
+Apply a function to each element of table and remove filtered elements
 ```lua
 table output = stbl.filter(table src, function func(table_element, int index, table src))
 ```
@@ -244,12 +260,10 @@ tbl = {1, 2, 3, 4}
 out = stbl.filter(tbl, function(v, i)	return v % 2 == 0 end)
 --> tbl {2, 4}
 --> out == tbl --> true
-
-Filtered values is removed.
 ```
 ]]
 function snus_table.filter(tbl, filter)
-	assert(type(tbl)  == "table",    "Arg #1 error: table expected, got " .. type(tbl))
+	assert(type(tbl)    == "table",    "Arg #1 error: table expected, got " .. type(tbl))
 	assert(type(filter) == "function", "Arg #2 error: function expected, got " .. type(filter))
 	local p = 1
 	for i = 1, #tbl do
@@ -283,8 +297,8 @@ out = stbl.copy(tbl)
 ]]
 function snus_table.copy(src)
 	local out = {}
-	for i, v in ipairs(src) do
-		out[i] = v
+	for i = 1, #src do
+		out[i] = src[i]
 	end
 	return out
 end
@@ -304,7 +318,7 @@ tblB = {foo = "FOO", foobar = "foobar"}
 out = stbl.merge(tblA, tblB)
 --> out {foo = "foo", bar = "bar", foobar = "foobar"}
 ```
-The first table dominates.
+Keys from the second table are added only if they are missing from the first table.
 ]]
 function snus_table.merge(a, b)
 	local out = {}
@@ -377,12 +391,12 @@ end
 
 --[[!MD
 #### binsert
-Searches nearest larger element to given in sorted arrays
+Searches nearest larger element to given in sorted arrays and inserts value to it's position.
 ```lua
-stbl.binsert(table tbl, value value[, func comparefunction])
+stbl.binsert(table tbl, value value[, func comparefunction(value a, value b, int index)])
 ```
 
-Compare function reveives current table element, value to insert and current array index.
+Compare function receives current table element, value to insert and current array index.
 ]]
 function snus_table.binsert(tbl, value, func)
 	local len = #tbl
@@ -392,7 +406,7 @@ function snus_table.binsert(tbl, value, func)
 		local m = floor(a + diff * .5)
 		if func and func(tbl[m], value, m) or tbl[m] >= value then
 			b = m
-		else
+		elseif
 			a = m
 		end
 		diff = b - a

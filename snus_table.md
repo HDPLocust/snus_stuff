@@ -53,6 +53,14 @@ end
 ```
 
 
+#### index
+Returns index of table value if exists, false otherwise.
+
+```lua
+int index = stbl.index(table tbl, any value)
+```
+
+
 #### keys
 Returns list of table keys (include string ones).
 
@@ -132,7 +140,7 @@ out = stbl.map(tbl, function(v, i) return v + 1 end, true)
 
 
 #### filter
-Apply a function to each element of table
+Apply a function to each element of table and remove filtered elements
 ```lua
 table output = stbl.filter(table src, function func(table_element, int index, table src))
 ```
@@ -143,8 +151,6 @@ tbl = {1, 2, 3, 4}
 out = stbl.filter(tbl, function(v, i)	return v % 2 == 0 end)
 --> tbl {2, 4}
 --> out == tbl --> true
-
-Filtered values is removed.
 ```
 
 
@@ -178,7 +184,7 @@ tblB = {foo = "FOO", foobar = "foobar"}
 out = stbl.merge(tblA, tblB)
 --> out {foo = "foo", bar = "bar", foobar = "foobar"}
 ```
-The first table dominates.
+Keys from the second table are added only if they are missing from the first table.
 
 
 #### update
@@ -209,12 +215,12 @@ Tip: `table.insert(tbl, stbl.binsearch(tbl, value), value)`
 
 
 #### binsert
-Searches nearest larger element to given in sorted arrays
+Searches nearest larger element to given in sorted arrays and inserts value to it's position.
 ```lua
-stbl.binsert(table tbl, value value[, func comparefunction])
+stbl.binsert(table tbl, value value[, func comparefunction(value a, value b, int index)])
 ```
 
-Compare function reveives current table element, value to insert and current array index.
+Compare function receives current table element, value to insert and current array index.
 
 
 #### import
