@@ -284,6 +284,25 @@ string concatted = sstr.concat(string text1[, string text2, string text3, ...], 
 ```
 
 
+#### f
+Format string using environment (like in Python 3+)
+```lua
+string formatted = sstr.f(string text[, table replace])
+
+Example:
+```lua
+local foo = 10
+local bar = "world"
+
+local text = sstr.f("Hello {foo} {bar}!")
+--> "Hello 10 world!"
+
+local text = sstr.f("Hello {foo} {bar}!", {foo = 100500})
+--> "Hello 100500 world!"
+
+```
+
+
 #### import
 Adds all string function from library to `string` table.
 ```lua

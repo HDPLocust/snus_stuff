@@ -759,6 +759,63 @@ function snus_string:concat(...)
 end
 
 --[[!MD
+#### f
+Format string using environment (like in Python 3+)
+```lua
+string formatted = sstr.f(string text[, table replace])
+
+Example:
+```lua
+local foo = 10
+local bar = "world"
+
+local text = sstr.f("Hello {foo} {bar}!")
+--> "Hello 10 world!"
+
+local text = sstr.f("Hello {foo} {bar}!", {foo = 100500})
+--> "Hello 100500 world!"
+
+```
+]]
+local getlocal = debug.getlocal
+local function getlocalenv(level)
+	level = level or 2
+	local i, k, v = 1, getlocal(level, 1)
+	local env = setmetatable({}, {__index = getfenv and getfenv(level) or _ENV or _G})
+	while k do
+		i = i + 1
+		env[k] = v
+		k, v = getlocal(level, i)
+	end
+	return env
+end
+
+
+local _replace, _env
+local function fmt1(key)
+	key = tonumber(key) or key
+	return _replace and _replace[key] or _env[key] or nil
+end
+
+local function fmt2(key, fmt)
+	key = tonumber(key) or key
+	local word = _replace and _replace[key] or _env[key]
+	return word and fmt:format(word) or nil
+end
+
+function snus_string:f(t)
+	_replace, _env = t, getlocalenv(3)
+	local result = self:gsub("{(%w+)}", fmt1):gsub( "{(%w+):(.-)}", fmt2)
+	_replace, _env = nil, nil
+	return result
+end
+
+local foo = 10
+local bar = "30"
+
+print( snus_string.f("Hello {foo} {bar} {foobar} {bar:%0.2f} {2:%.2f}", {bar = 40, -10, -20}) )
+
+--[[!MD
 #### import
 Adds all string function from library to `string` table.
 ```lua
@@ -784,7 +841,5 @@ if ... then
 end
 
 if package.config:sub(1, 1) == "\\" then
-	os.execute("chcp 65001")
+	--os.execute("chcp 65001")
 end
-
-print(snus_string.uchar(0x042B))
