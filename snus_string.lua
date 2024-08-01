@@ -810,11 +810,6 @@ function snus_string:f(t)
 	return result
 end
 
-local foo = 10
-local bar = "30"
-
-print( snus_string.f("Hello {foo} {bar} {foobar} {bar:%0.2f} {2:%.2f}", {bar = 40, -10, -20}) )
-
 --[[!MD
 #### import
 Adds all string function from library to `string` table.
