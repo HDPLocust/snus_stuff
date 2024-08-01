@@ -93,6 +93,7 @@ dsmt(true, {__index = bool})
 --[[!MD 
 ### Nil extension, yes
 
+To activate methods, you must call require("snus_betterlua").extend_nil()
 ```lua
 local result
 result = mynil:print("Value is %s") --> "Value is nil"
@@ -106,10 +107,9 @@ local mytable = {foo = {}}
 local result = mytable.foo.bar.baz 
 ```
 Pros: This will not raise errors, unlike basic Lua behavior.
-Cons: `mytable.foo.bar.print`, `mytable.foo.bar.type` and `mytable.foo.bar.tostring` will be functions (from nil metatable)
+Cons: `mytable.foo.bar.print`, `mytable.foo.bar.type` and `mytable.foo.bar.tostring` will be functions (from nil metatable if methods are activated)
 ]]
-local nilmt = {print = defaultprint, tostring = tostring}
-function nilmt:type() return "nil" end
+local nilmt = {}
 dsmt(nil,  {__index = nilmt})
 
 --[[!MD 
@@ -248,3 +248,10 @@ local tblmt = assert(gmt(table) == nil, "table [table] already have metatable")
 smt(table, {__call = function(self, t)
 	return smt(t or {}, self)
 end})
+
+
+return {extend_nil = function()
+		nilmt.print = defaultprint, nilmt.tostring = tostring
+		function nilmt:type() return "nil" end
+	end
+}

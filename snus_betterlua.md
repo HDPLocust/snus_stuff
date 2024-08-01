@@ -56,6 +56,7 @@ result = myboolean:tonumber() --> 1 (or 0 if false)
  
 ### Nil extension, yes
 
+To activate methods, you must call require("snus_betterlua").extend_nil()
 ```lua
 local result
 result = mynil:print("Value is %s") --> "Value is nil"
@@ -69,7 +70,7 @@ local mytable = {foo = {}}
 local result = mytable.foo.bar.baz 
 ```
 Pros: This will not raise errors, unlike basic Lua behavior.
-Cons: `mytable.foo.bar.print`, `mytable.foo.bar.type` and `mytable.foo.bar.tostring` will be functions (from nil metatable)
+Cons: `mytable.foo.bar.print`, `mytable.foo.bar.type` and `mytable.foo.bar.tostring` will be functions (from nil metatable if methods are activated)
 
  
 ### Coroutine extension
