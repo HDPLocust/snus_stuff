@@ -93,7 +93,7 @@ dsmt(true, {__index = bool})
 --[[!MD 
 ### Nil extension, yes
 
-To activate methods, you must call require("snus_betterlua").extend_nil()
+To activate methods, you must call function returned by `require("snus_betterlua")()`
 ```lua
 local result
 result = mynil:print("Value is %s") --> "Value is nil"
@@ -250,8 +250,7 @@ smt(table, {__call = function(self, t)
 end})
 
 
-return {extend_nil = function()
-		nilmt.print = defaultprint, nilmt.tostring = tostring
-		function nilmt:type() return "nil" end
-	end
-}
+return function()
+	nilmt.print = defaultprint, nilmt.tostring = tostring
+	function nilmt:type() return "nil" end
+end

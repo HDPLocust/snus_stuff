@@ -56,7 +56,7 @@ result = myboolean:tonumber() --> 1 (or 0 if false)
  
 ### Nil extension, yes
 
-To activate methods, you must call require("snus_betterlua").extend_nil()
+To activate methods, you must call function returned by `require("snus_betterlua")()`
 ```lua
 local result
 result = mynil:print("Value is %s") --> "Value is nil"
