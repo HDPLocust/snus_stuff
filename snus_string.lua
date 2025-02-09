@@ -34,34 +34,34 @@ This library also does not override the standard metamethods like __add/__div, s
 
 -- CP1251 kyr
 local ansi_decode={
-  [128]='\208\130',[129]='\208\131',[130]='\226\128\154',[131]='\209\147',[132]='\226\128\158',[133]='\226\128\166',
-  [134]='\226\128\160',[135]='\226\128\161',[136]='\226\130\172',[137]='\226\128\176',[138]='\208\137',[139]='\226\128\185',
-  [140]='\208\138',[141]='\208\140',[142]='\208\139',[143]='\208\143',[144]='\209\146',[145]='\226\128\152',
-  [146]='\226\128\153',[147]='\226\128\156',[148]='\226\128\157',[149]='\226\128\162',[150]='\226\128\147',[151]='\226\128\148',
-  [152]='\194\152',[153]='\226\132\162',[154]='\209\153',[155]='\226\128\186',[156]='\209\154',[157]='\209\156',
-  [158]='\209\155',[159]='\209\159',[160]='\194\160',[161]='\209\142',[162]='\209\158',[163]='\208\136',
-  [164]='\194\164',[165]='\210\144',[166]='\194\166',[167]='\194\167',[168]='\208\129',[169]='\194\169',
-  [170]='\208\132',[171]='\194\171',[172]='\194\172',[173]='\194\173',[174]='\194\174',[175]='\208\135',
-  [176]='\194\176',[177]='\194\177',[178]='\208\134',[179]='\209\150',[180]='\210\145',[181]='\194\181',
-  [182]='\194\182',[183]='\194\183',[184]='\209\145',[185]='\226\132\150',[186]='\209\148',[187]='\194\187',
-  [188]='\209\152',[189]='\208\133',[190]='\209\149',[191]='\209\151'
+	[128]='\208\130',[129]='\208\131',[130]='\226\128\154',[131]='\209\147',[132]='\226\128\158',[133]='\226\128\166',
+	[134]='\226\128\160',[135]='\226\128\161',[136]='\226\130\172',[137]='\226\128\176',[138]='\208\137',[139]='\226\128\185',
+	[140]='\208\138',[141]='\208\140',[142]='\208\139',[143]='\208\143',[144]='\209\146',[145]='\226\128\152',
+	[146]='\226\128\153',[147]='\226\128\156',[148]='\226\128\157',[149]='\226\128\162',[150]='\226\128\147',[151]='\226\128\148',
+	[152]='\194\152',[153]='\226\132\162',[154]='\209\153',[155]='\226\128\186',[156]='\209\154',[157]='\209\156',
+	[158]='\209\155',[159]='\209\159',[160]='\194\160',[161]='\209\142',[162]='\209\158',[163]='\208\136',
+	[164]='\194\164',[165]='\210\144',[166]='\194\166',[167]='\194\167',[168]='\208\129',[169]='\194\169',
+	[170]='\208\132',[171]='\194\171',[172]='\194\172',[173]='\194\173',[174]='\194\174',[175]='\208\135',
+	[176]='\194\176',[177]='\194\177',[178]='\208\134',[179]='\209\150',[180]='\210\145',[181]='\194\181',
+	[182]='\194\182',[183]='\194\183',[184]='\209\145',[185]='\226\132\150',[186]='\209\148',[187]='\194\187',
+	[188]='\209\152',[189]='\208\133',[190]='\209\149',[191]='\209\151'
 }
 local utf8_decode={
-  [128]={[147]='\150',[148]='\151',[152]='\145',[153]='\146',[154]='\130',[156]='\147',[157]='\148',[158]='\132',[160]='\134',[161]='\135',[162]='\149',[166]='\133',[176]='\137',[185]='\139',[186]='\155'},
-  [130]={[172]='\136'},
-  [132]={[150]='\185',[162]='\153'},
-  [194]={[152]='\152',[160]='\160',[164]='\164',[166]='\166',[167]='\167',[169]='\169',[171]='\171',[172]='\172',[173]='\173',[174]='\174',[176]='\176',[177]='\177',[181]='\181',[182]='\182',[183]='\183',[187]='\187'},
-  [208]={[129]='\168',[130]='\128',[131]='\129',[132]='\170',[133]='\189',[134]='\178',[135]='\175',[136]='\163',[137]='\138',[138]='\140',[139]='\142',[140]='\141',[143]='\143',[144]='\192',[145]='\193',[146]='\194',[147]='\195',[148]='\196',
-    [149]='\197',[150]='\198',[151]='\199',[152]='\200',[153]='\201',[154]='\202',[155]='\203',[156]='\204',[157]='\205',[158]='\206',[159]='\207',[160]='\208',[161]='\209',[162]='\210',[163]='\211',[164]='\212',[165]='\213',[166]='\214',
-    [167]='\215',[168]='\216',[169]='\217',[170]='\218',[171]='\219',[172]='\220',[173]='\221',[174]='\222',[175]='\223',[176]='\224',[177]='\225',[178]='\226',[179]='\227',[180]='\228',[181]='\229',[182]='\230',[183]='\231',[184]='\232',
-    [185]='\233',[186]='\234',[187]='\235',[188]='\236',[189]='\237',[190]='\238',[191]='\239'},
-  [209]={[128]='\240',[129]='\241',[130]='\242',[131]='\243',[132]='\244',[133]='\245',[134]='\246',[135]='\247',[136]='\248',[137]='\249',[138]='\250',[139]='\251',[140]='\252',[141]='\253',[142]='\254',[143]='\255',[144]='\161',[145]='\184',
-    [146]='\144',[147]='\131',[148]='\186',[149]='\190',[150]='\179',[151]='\191',[152]='\188',[153]='\154',[154]='\156',[155]='\158',[156]='\157',[158]='\162',[159]='\159'},[210]={[144]='\165',[145]='\180'}
+	[128]={[147]='\150',[148]='\151',[152]='\145',[153]='\146',[154]='\130',[156]='\147',[157]='\148',[158]='\132',[160]='\134',[161]='\135',[162]='\149',[166]='\133',[176]='\137',[185]='\139',[186]='\155'},
+	[130]={[172]='\136'},
+	[132]={[150]='\185',[162]='\153'},
+	[194]={[152]='\152',[160]='\160',[164]='\164',[166]='\166',[167]='\167',[169]='\169',[171]='\171',[172]='\172',[173]='\173',[174]='\174',[176]='\176',[177]='\177',[181]='\181',[182]='\182',[183]='\183',[187]='\187'},
+	[208]={[129]='\168',[130]='\128',[131]='\129',[132]='\170',[133]='\189',[134]='\178',[135]='\175',[136]='\163',[137]='\138',[138]='\140',[139]='\142',[140]='\141',[143]='\143',[144]='\192',[145]='\193',[146]='\194',[147]='\195',[148]='\196',
+	[149]='\197',[150]='\198',[151]='\199',[152]='\200',[153]='\201',[154]='\202',[155]='\203',[156]='\204',[157]='\205',[158]='\206',[159]='\207',[160]='\208',[161]='\209',[162]='\210',[163]='\211',[164]='\212',[165]='\213',[166]='\214',
+	[167]='\215',[168]='\216',[169]='\217',[170]='\218',[171]='\219',[172]='\220',[173]='\221',[174]='\222',[175]='\223',[176]='\224',[177]='\225',[178]='\226',[179]='\227',[180]='\228',[181]='\229',[182]='\230',[183]='\231',[184]='\232',
+	[185]='\233',[186]='\234',[187]='\235',[188]='\236',[189]='\237',[190]='\238',[191]='\239'},
+	[209]={[128]='\240',[129]='\241',[130]='\242',[131]='\243',[132]='\244',[133]='\245',[134]='\246',[135]='\247',[136]='\248',[137]='\249',[138]='\250',[139]='\251',[140]='\252',[141]='\253',[142]='\254',[143]='\255',[144]='\161',[145]='\184',
+	[146]='\144',[147]='\131',[148]='\186',[149]='\190',[150]='\179',[151]='\191',[152]='\188',[153]='\154',[154]='\156',[155]='\158',[156]='\157',[158]='\162',[159]='\159'},[210]={[144]='\165',[145]='\180'}
 }
 
 local nmdc = {
-  [36]  = '$',
-  [124] = '|'
+	[36]  = '$',
+	[124] = '|'
 }
 
 local string, table = _G.string, _G.table
@@ -146,7 +146,7 @@ local char_to_hex = function(c)
 end
 
 function snus_string:urlencode(space_to_plus)
-	self = self:gsub("\n", "\r\n")
+	self = self:gsub("\r?\n", "\r\n")
 	self = self:gsub("([^%w ])", char_to_hex)
 	self = self:gsub(" ", space_to_plus and "+" or "%%20")
 	return self
@@ -176,7 +176,7 @@ Contains sstring.charpattern key "[%z\1-\x7F\xC2-\xF4][\x80-\xBF]*" which is a t
 Unicode character iterator
 ```lua
 for int endbyte, string u8char in sstr.uchars(string u8text) do
-  print(endbyte, u8char)
+	print(endbyte, u8char)
 end
 ```
 
@@ -291,7 +291,7 @@ end
 
 function snus_string:udecode(prefix)
 	prefix = escape_prefix(prefix or "\\u")
-	return self:gsub(prefix .. "(%d+)", unicode_to_utf8)
+	return self:gsub(prefix .. "(%x%x%x?%x?)", unicode_to_utf8)
 end
 
 --[[!MD
@@ -481,6 +481,30 @@ function snus_string:usanitize()
 end
 
 --[[!MD
+#### ulpad, urpad
+Returns utf8 with padding of given character
+```lua
+string padding = sstring.ulpad(number length[, string character])
+```
+]]
+function snus_string:ulpad(size, character)
+	local len = self:ulen()
+	if len >= size then return self end
+	return (character or " "):rep(size - len) .. self
+end
+
+snus_string.lpad = snus_string.ulpad
+
+function snus_string:urpad(size, character)
+	local len = self:ulen()
+	if len >= size then return self end
+	return self .. (character or " "):rep(size - len)
+end
+
+snus_string.rpad = snus_string.urpad
+
+
+--[=[!MD
 ### Utility module
 #### split
 
@@ -502,7 +526,7 @@ splitted = sstring.split("   ❤️Hello   ❤️ world❤️  !", "%s*❤️%s*
 --> {"", Hello", "world", "!"}
 
 ```
-]]
+]=]
 function snus_string:split(sep, unp, regex)
 	sep = sep or ","
 	local lsep = #sep
@@ -525,14 +549,14 @@ function snus_string:split(sep, unp, regex)
 end
 local split = snus_string.split
 
---[[!MD
+--[=[!MD
 #### slice
 
 Returns one or several chunks of separate formatted string
 ```lua
 table slice = sstring.slice(string text, int startindex, int endindex, string separator[, bool unpack_result])
 ```
-]]
+]=]
 function snus_string:slice(i, j, sep, unp)
 	local list = split(self, sep)
 
@@ -573,7 +597,7 @@ function snus_string.swap(text, from, to)
 	return table.concat(out)
 end
 
---[=[!MD
+--[==[!MD
 #### bfind
 Something like "%b" modifier in string patterns but little more complex.
 
@@ -599,7 +623,7 @@ found = sstring.bfind(text, "<div>", "</div>", 0, true)
 	<div>	foobar </div>
 ]]
 ```
-]=]
+]==]
 local huge, min = math.huge, math.min
 function snus_string:bfind(head, tail, offset, ex_bounds, plain)
 	local header_start, header_end = self:find(head, offset or 1, plain)
@@ -623,7 +647,7 @@ function snus_string:bfind(head, tail, offset, ex_bounds, plain)
 	return self:sub(header_start, cursor), header_start, cursor
 end
 
---[[!MD
+--[=[!MD
 #### lines
 Lines iterator
 ```lua
@@ -633,7 +657,7 @@ end
 ```
 
 Default separator is "\r?\n"
-]]
+]=]
 local function str_lines(str, args)
 	if str.str then -- lua reverses args after string:lines but not reverses after str_lines
 		args = str
@@ -662,7 +686,7 @@ function snus_string:lines(sep)
 end
 local lines = snus_string.lines
 
---[[!MD
+--[=[!MD
 #### field
 Returns one line (or field) by index
 ```lua
@@ -670,7 +694,7 @@ string field = sstr.field(string text, string separator, int index)
 ```
 
 Default separator is "\r?\n"
-]]
+]=]
 function snus_string:field(sep, index)
 	local curr = 0
 	for line in lines(self, sep) do
@@ -680,38 +704,38 @@ function snus_string:field(sep, index)
 	return ""
 end
 
---[[!MD
+--[=[!MD
 #### trim
 Cuts given characters from front and back of text
 ```lua
 string trimmed = sstr.trim(string text, string charset)
 ```
 Default set of trimming characters is "\r\n%s"
-]]
+]=]
 function snus_string:trim(chars)
 	chars = chars or "\r\n "
 	return self:match("^[" .. chars .. "]*(.-)[" .. chars .. "]*$")
 end
 
---[[!MD
+--[=[!MD
 #### starts
 Checks if a string starts with the given pattern.
 ```lua
 bool isStarts = sstr.starts(string text, string pattern[, bool isRegex])
 ```
-]]
+]=]
 function snus_string:starts(pattern, re)
 	if re then return self:find("^"..pattern) end
 	return pattern == '' or self:sub(1, #pattern) == pattern
 end
 
---[[!MD
+--[=[!MD
 #### ends
 Checks if a string ends with the given pattern.
 ```lua
 bool isEnds = sstr.ends(string text, string pattern[, bool isRegex])
 ```
-]]
+]=]
 function snus_string:ends(pattern, re)
 	if re then return self:find(pattern .. "$") end
 	return pattern == '' or self:sub(-#pattern) == pattern
@@ -758,7 +782,7 @@ function snus_string:concat(...)
 	return concat(out, sep)
 end
 
---[[!MD
+--[=[!MD
 #### f
 Format string using environment (like in Python 3+)
 ```lua
@@ -776,7 +800,7 @@ local text = sstr.f("Hello {foo} {bar}!", {foo = 100500})
 --> "Hello 100500 world!"
 
 ```
-]]
+]=]
 local getlocal = debug.getlocal
 local function getlocalenv(level)
 	level = level or 2
@@ -810,7 +834,7 @@ function snus_string:f(t)
 	return result
 end
 
---[[!MD
+--[=[!MD
 #### import
 Adds all string function from library to `string` table.
 ```lua
@@ -819,7 +843,7 @@ sstring.import([bool redefine])
 
 If redefine is set to true, the library will be forced to be imported with method overrides.
 Otherwise, it will raise an error for already existing functions.
-]]
+]=]
 function snus_string.import(redefine)
 	for k, v in pairs(snus_string) do
 		if string[k] and string[k] ~= v then

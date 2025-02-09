@@ -63,7 +63,7 @@ Contains sstring.charpattern key "[%z\1-\x7F\xC2-\xF4][\x80-\xBF]*" which is a t
 Unicode character iterator
 ```lua
 for int endbyte, string u8char in sstr.uchars(string u8text) do
-  print(endbyte, u8char)
+	print(endbyte, u8char)
 end
 ```
 
@@ -159,6 +159,13 @@ string u8char, int startoffset, int endbyteoffset = sstring.uindex(string u8text
 Returns utf8 string without any non-utf8 character
 ```lua
 string u8sanitazed = sstring.usanitize(string u8text)
+```
+
+
+#### ulpad, urpad
+Returns utf8 with padding of given character
+```lua
+string padding = sstring.ulpad(number length[, string character])
 ```
 
 

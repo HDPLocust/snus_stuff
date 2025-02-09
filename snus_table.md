@@ -31,7 +31,7 @@ output = table.filter({1, 2, 3, 4}, function(v) return v % 2 == 0 end)
 #### arr
 Creates new array that have all functions of table and snus_table library as methods. Returns first arg passed or new empty table.
 ```lua
-table arr = stbl.arr([table tbl])
+snus_table  arr = stbl.arr([table tbl])
 --> arr == tbl --> true
 ```
 
@@ -53,8 +53,32 @@ end
 ```
 
 
+#### min
+Returns first least item inside table and it's index.
+
+```lua
+value, index = stbl.min(table tbl[, function comparefunction(a, b)])
+```
+
+
+#### max
+Returns first largest item inside table and it's index.
+
+```lua
+value, index = stbl.max(table tbl[, function comparefunction(a, b)])
+```
+
+
+#### summ
+Returns summ of elements in the table.
+
+```lua
+int summ = stbl.summ(table tbl[, function tonumberfunction])
+```
+
+
 #### index
-Returns index of table value if exists, false otherwise.
+Returns index of table value if exists, nil otherwise.
 
 ```lua
 int index = stbl.index(table tbl, any value)
@@ -65,7 +89,7 @@ int index = stbl.index(table tbl, any value)
 Returns list of table keys (include string ones).
 
 ```lua
-table keys = stbl.keys(table tbl)
+snus_table keys = stbl.keys(table tbl)
 ```
 
 
@@ -73,7 +97,7 @@ table keys = stbl.keys(table tbl)
 Returns list of all table values.
 
 ```lua
-table values = stbl.values(table tbl)
+snus_table values = stbl.values(table tbl)
 ```
 
 
@@ -118,9 +142,9 @@ end
 
 
 #### map
-Apply a function to each element of table
+Apply a function to each element of table in place
 ```lua
-table output = stbl.map(table src, function func(table_element, int index, table src), bool apply_in_place)
+snus_table output = stbl.map(table src, function func(table_element, int index, table src), bool apply_in_place)
 ```
 
 Example:
@@ -136,6 +160,36 @@ tbl = {10, 20, 30}
 out = stbl.map(tbl, function(v, i) return v + 1 end, true)
 --> tbl {11, 21, 31}
 --> out == tbl --> true
+```
+
+
+#### filter
+Apply a function to each element of table and remove filtered elements from that table in place
+```lua
+table output = stbl.filter(table src, function func(table_element, int index, table src))
+```
+
+Example:
+```lua
+tbl = {1, 2, 3, 4}
+out = stbl.filter(tbl, function(v, i) return v % 2 == 0 end)
+--> tbl {2, 4}
+--> out == tbl --> true
+```
+
+
+#### where
+Returns a table that contains elements from src filtered by filter function
+```lua
+snus_table output = stbl.where(table src, function func(table_element, int src_index, table src, table dst))
+```
+
+Example:
+```lua
+tbl = {1, 2, 3, 4}
+out = stbl.where(tbl, function(v, i) return v % 2 == 0 end)
+--> tbl {2, 4}
+--> out == tbl --> false
 ```
 
 
@@ -157,7 +211,7 @@ out = stbl.filter(tbl, function(v, i)	return v % 2 == 0 end)
 #### copy
 Simple array copy. No deep.
 ```lua
-table output = stbl.copy(table src)
+snus_table output = stbl.copy(table src)
 ```
 
 Example:
@@ -173,7 +227,7 @@ out = stbl.copy(tbl)
 #### merge
 Merge of two tables (arrays or/and dicts)
 ```lua
-table output = stbl.merge(table a, table b)
+snus_table output = stbl.merge(table a, table b)
 ```
 
 Example:
@@ -184,7 +238,7 @@ tblB = {foo = "FOO", foobar = "foobar"}
 out = stbl.merge(tblA, tblB)
 --> out {foo = "foo", bar = "bar", foobar = "foobar"}
 ```
-Keys from the second table are added only if they are missing from the first table.
+Keys from the b-table are added only if they are missing from the a-table.
 
 
 #### update
@@ -221,6 +275,19 @@ stbl.binsert(table tbl, value value[, func comparefunction(value a, value b, int
 ```
 
 Compare function receives current table element, value to insert and current array index.
+
+
+#### str
+Returns string representation of this table (array part)
+```lua
+string text = stbl.str(table tbl[, func tostring_func(value a)])
+```
+
+Example:
+```lua
+print( stbl.str{10, 20, 30, "hello", "world"} )
+--> {10, 20, 30, "hello", " \"world\" "}
+```
 
 
 #### import

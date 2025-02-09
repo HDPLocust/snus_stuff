@@ -45,6 +45,7 @@ number result = smath.clamp(number value, number lower, number upper)
 function snus_math.clamp(value, lower, upper)
 	return value < lower and lower or value > upper and upper or value
 end
+snus_math.trim = snus_math.clamp
 
 --[[!MD
 #### loopf

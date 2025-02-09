@@ -28,20 +28,23 @@ output = table.filter({1, 2, 3, 4}, function(v) return v % 2 == 0 end)
 (be sure, it will raises error on redefinition of existed methods from other libraries.
 ]]
 
+local table = _G.table
 
 local snus_table = {}
 snus_table.__index = snus_table
-snus_table.unpack = _G.unpack or _G.table.unpack
+snus_table.unpack = _G.table.unpack or _G.unpack
 
-for k, v in pairs(_G.table) do
-	snus_table[k] = v
+for k, v in pairs(table) do
+	if type(v) == "function" then
+		snus_table[k] = v
+	end
 end
 
---[[!MD
+--[=[!MD
 #### arr
 Creates new array that have all functions of table and snus_table library as methods. Returns first arg passed or new empty table.
 ```lua
-table arr = stbl.arr([table tbl])
+snus_table  arr = stbl.arr([table tbl])
 --> arr == tbl --> true
 ```
 
@@ -61,14 +64,91 @@ end
 --> 2  21
 --> 1  11
 ```
-]]
+]=]
+
 function snus_table.arr(tbl)
 	return setmetatable(tbl or {}, snus_table)
 end
 
+snus_table.new = snus_table.arr
+
+--[[!MD
+#### min
+Returns first least item inside table and it's index.
+
+```lua
+value, index = stbl.min(table tbl[, function comparefunction(a, b)])
+```
+]]
+function snus_table.min(tbl, func)
+	assert(type(tbl) == "table", "Arg #1 error: table expected, got " .. type(tbl))
+	local len = #tbl
+	if len == 0 then return nil end
+	local min, p = #tbl[1], 1
+	for i = #tbl, 2, -1 do
+		local v = tbl[i]
+		if func then
+			if func(v, min) then
+				min, p = v, i
+			end
+		else 
+			if v < min then
+				min, p = v, i
+			end
+		end
+	end
+	return min, p
+end
+
+--[[!MD
+#### max
+Returns first largest item inside table and it's index.
+
+```lua
+value, index = stbl.max(table tbl[, function comparefunction(a, b)])
+```
+]]
+function snus_table.max(tbl, func)
+	assert(type(tbl) == "table", "Arg #1 error: table expected, got " .. type(tbl))
+	local len = #tbl
+	if len == 0 then return nil end
+	local max, p = #tbl[1], 1
+	for i = #tbl, 2, -1 do
+		local v = tbl[i]
+		if func then
+			if func(v, max) then
+				max, p = v, i
+			end
+		else 
+			if v > max then
+				max, p = v, i
+			end
+		end
+	end
+	return max, p
+end
+
+--[[!MD
+#### summ
+Returns summ of elements in the table.
+
+```lua
+int summ = stbl.summ(table tbl[, function tonumberfunction])
+```
+]]
+function snus_table.summ(tbl, func)
+	assert(type(tbl) == "table", "Arg #1 error: table expected, got " .. type(tbl))
+	local summ = 0
+	for i = 1, #tbl do
+		local v = tbl[i]
+		summ = summ + func and func(tbl[i]) or tbl[i]
+	end
+	return max, p
+end
+
 --[[!MD
 #### index
-Returns index of table value if exists, false otherwise.
+Returns index of table value if exists, nil otherwise.
 
 ```lua
 int index = stbl.index(table tbl, any value)
@@ -79,7 +159,7 @@ function snus_table.index(tbl, value)
 	for i = 1, #tbl do
 		if tbl[i] == value then return i end
 	end
-	return false
+	return nil
 end
 
 --[[!MD
@@ -87,7 +167,7 @@ end
 Returns list of table keys (include string ones).
 
 ```lua
-table keys = stbl.keys(table tbl)
+snus_table keys = stbl.keys(table tbl)
 ```
 ]]
 function snus_table.keys(tbl)
@@ -98,7 +178,7 @@ function snus_table.keys(tbl)
 		i = i + 1
 		output[i] = k
 	end
-	return output
+	return snus_table.arr(output)
 end
 
 --[[!MD
@@ -106,7 +186,7 @@ end
 Returns list of all table values.
 
 ```lua
-table values = stbl.values(table tbl)
+snus_table values = stbl.values(table tbl)
 ```
 ]]
 function snus_table.values(tbl)
@@ -117,7 +197,7 @@ function snus_table.values(tbl)
 		i = i + 1
 		output[i] = v
 	end
-	return output
+	return snus_table.arr(output)
 end
 
 --[[!MD
@@ -217,9 +297,9 @@ end
 
 --[[!MD
 #### map
-Apply a function to each element of table
+Apply a function to each element of table in place
 ```lua
-table output = stbl.map(table src, function func(table_element, int index, table src), bool apply_in_place)
+snus_table output = stbl.map(table src, function func(table_element, int index, table src), bool apply_in_place)
 ```
 
 Example:
@@ -240,10 +320,71 @@ out = stbl.map(tbl, function(v, i) return v + 1 end, true)
 function snus_table.map(src, func, inPlace)
 	assert(type(src)  == "table",    "Arg #1 error: table expected, got " .. type(src))
 	assert(type(func) == "function", "Arg #2 error: function expected, got " .. type(func))
-	local out = inPlace and src or {}
+	local out = inPlace and src or snus_table.arr({})
 	for i, v in ipairs(src) do
 		out[i] = func(v, i, src)
 	end
+	return out
+end
+
+--[[!MD
+#### filter
+Apply a function to each element of table and remove filtered elements from that table in place
+```lua
+table output = stbl.filter(table src, function func(table_element, int index, table src))
+```
+
+Example:
+```lua
+tbl = {1, 2, 3, 4}
+out = stbl.filter(tbl, function(v, i) return v % 2 == 0 end)
+--> tbl {2, 4}
+--> out == tbl --> true
+```
+]]
+function snus_table.filter(tbl, filter)
+	assert(type(tbl)    == "table",    "Arg #1 error: table expected, got " .. type(tbl))
+	assert(type(filter) == "function", "Arg #2 error: function expected, got " .. type(filter))
+	local p = 1
+	for i = 1, #tbl do
+		tbl[p] = tbl[i]
+		if filter(tbl[i], i, tbl) then
+			p = p + 1
+		end
+	end
+
+	for i = #tbl, p, -1 do
+		tbl[i] = nil
+	end
+	return tbl
+end
+
+--[[!MD
+#### where
+Returns a table that contains elements from src filtered by filter function
+```lua
+snus_table output = stbl.where(table src, function func(table_element, int src_index, table src, table dst))
+```
+
+Example:
+```lua
+tbl = {1, 2, 3, 4}
+out = stbl.where(tbl, function(v, i) return v % 2 == 0 end)
+--> tbl {2, 4}
+--> out == tbl --> false
+```
+]]
+function snus_table.where(tbl, filter)
+	assert(type(tbl)    == "table",    "Arg #1 error: table expected, got " .. type(tbl))
+	assert(type(filter) == "function", "Arg #2 error: function expected, got " .. type(filter))
+	local out, oi = {}, 1
+	for i = 1, #tbl do
+		if filter(tbl[i], i, tbl) then
+			out[oi] = tbl[i]
+			oi = oi + 1
+		end
+	end
+	
 	return out
 end
 
@@ -283,7 +424,7 @@ end
 #### copy
 Simple array copy. No deep.
 ```lua
-table output = stbl.copy(table src)
+snus_table output = stbl.copy(table src)
 ```
 
 Example:
@@ -296,18 +437,18 @@ out = stbl.copy(tbl)
 ```
 ]]
 function snus_table.copy(src)
-	local out = {}
+	local out = snus_table.arr({})
 	for i = 1, #src do
 		out[i] = src[i]
 	end
-	return out
+	return snus_table.arr(out)
 end
 
 --[[!MD
 #### merge
 Merge of two tables (arrays or/and dicts)
 ```lua
-table output = stbl.merge(table a, table b)
+snus_table output = stbl.merge(table a, table b)
 ```
 
 Example:
@@ -318,10 +459,10 @@ tblB = {foo = "FOO", foobar = "foobar"}
 out = stbl.merge(tblA, tblB)
 --> out {foo = "foo", bar = "bar", foobar = "foobar"}
 ```
-Keys from the second table are added only if they are missing from the first table.
+Keys from the b-table are added only if they are missing from the a-table.
 ]]
 function snus_table.merge(a, b)
-	local out = {}
+	local out = snus_table.arr({})
 	for k, v in pairs(b) do
 		out[k] = v
 	end
@@ -402,11 +543,11 @@ function snus_table.binsert(tbl, value, func)
 	local len = #tbl
 	local a, b = 1, len
 	local diff = b - a
-	while diff > 8 do
+	while diff > 11 do
 		local m = floor(a + diff * .5)
 		if func and func(tbl[m], value, m) or tbl[m] >= value then
 			b = m
-		elseif
+		else
 			a = m
 		end
 		diff = b - a
@@ -421,20 +562,61 @@ function snus_table.binsert(tbl, value, func)
 end
 
 --[[!MD
+#### str
+Returns string representation of this table (array part)
+```lua
+string text = stbl.str(table tbl[, func tostring_func(value a)])
+```
+
+Example:
+```lua
+print( stbl.str{10, 20, 30, "hello", "world"} )
+--> {10, 20, 30, "hello", " \"world\" "}
+```
+]]
+function snus_table.str(tbl, tostring_func)
+	local text = {}
+	local len = #tbl
+	
+	if tostring_func then
+		for i = 1, len do
+			text[len + 1] = tostring_func(tbl[i])
+		end
+	else
+		for i = 1, len do
+			local value = tbl[i]
+			local tvalue = type(value)
+			if tvalue == "string" then
+				value = "\"" .. value:gsub("\"", "\\\"") .. "\""
+			end
+			text[i] = tostring(value)
+		end
+	end
+	
+	return "{" .. table.concat(text, ", ") .. "}"
+end
+
+--[[!MD
 #### import
 Adds all table function from library to `table` table.
 ```lua
 require("snus_table").import()
 ```
 ]]
-local table = _G.table
+
 function snus_table.import(redefine)
-	for k, v in pairs(snus_table) do
-		table[k] = v
+	if redefine then
+		local tmt = {__index = table}
+		function snus_table.arr(tbl)
+			return setmetatable(tbl or {}, tmt)
+		end
+		snus_table.new = snus_table.arr
 	end
-	
-	function snus_table.arr(tbl)
-		return setmetatable(tbl or {}, table)
+
+	for k, v in pairs(snus_table) do
+		if not table[k] or redefine then
+			table[k] = v
+		end
 	end
 end
 
