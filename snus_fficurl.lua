@@ -15,7 +15,7 @@ function uri.encode(u)
   if u == nil then
     return
   end
-	u = tostring(u)
+  u = tostring(u)
   u = u:gsub("\n", "\r\n")
   u = u:gsub("([^%w ])", uri.char_to_hex)
   u = u:gsub(" ", "+")
