@@ -256,7 +256,7 @@ end
 local function sipairs_next(tbl, index)
 	index = index + 1
 	local v = tbl[index]
-	if not v then return end
+	if v == nil then return end
 
 	return index, v
 end
@@ -284,7 +284,7 @@ end
 local function ripairs_next(tbl, index)
 	index = index - 1
 	local v = tbl[index]
-	if not v then return end
+	if v == nil then return end
 	return index, v
 end
 
