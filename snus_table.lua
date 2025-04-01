@@ -579,15 +579,15 @@ end
 
 --[[!MD
 #### str
-Returns string representation of this table (array part)
+Returns simple, flat string representation of this table (array part)
 ```lua
 string text = stbl.str(table tbl[, func tostring_func(value a)])
 ```
 
 Example:
 ```lua
-print( stbl.str{10, 20, 30, "hello", "world"} )
---> {10, 20, 30, "hello", " \"world\" "}
+print( stbl.str{10, 20, 30, "hello", '"world"'} )
+--> {10, 20, 30, "hello", "\"world\""}
 ```
 ]]
 function snus_table.str(tbl, tostring_func)
@@ -603,7 +603,7 @@ function snus_table.str(tbl, tostring_func)
 			local value = tbl[i]
 			local tvalue = type(value)
 			if tvalue == "string" then
-				value = "\"" .. value:gsub("\"", "\\\"") .. "\""
+				value = '"' .. value:gsub('"', '\\"') .. '"'
 			end
 			text[i] = tostring(value)
 		end

@@ -283,15 +283,15 @@ table tbl, int index, value element = stbl.binsert(table tbl, value value[, func
 
 
 #### str
-Returns string representation of this table (array part)
+Returns simple, flat string representation of this table (array part)
 ```lua
 string text = stbl.str(table tbl[, func tostring_func(value a)])
 ```
 
 Example:
 ```lua
-print( stbl.str{10, 20, 30, "hello", "world"} )
---> {10, 20, 30, "hello", " \"world\" "}
+print( stbl.str{10, 20, 30, "hello", '"world"'} )
+--> {10, 20, 30, "hello", "\"world\""}
 ```
 
 
