@@ -498,68 +498,84 @@ end
 
 --[[!MD
 #### binsearch
-Searches nearest larger element to given in sorted arrays
+Finds the closest greater element to a given element in a sorted array
 ```lua
-int index, value element = stbl.binsearch(table tbl, value value)
+int index, value element = stbl.binsearch(table tbl, value value[, func comparefunction(value a, value b, int index)])
 ```
 
-If you want to keep array sorted, you may `table.insert` your value to given index.
-Tip: `table.insert(tbl, stbl.binsearch(tbl, value), value)`
+Default comparefunction is like
+```lua
+function(a, b) a < b end
+```
+
+You may use it with `table.insert` to keep array sorted:
+```lua
+table.insert(tbl, stbl.binsearch(tbl, value), value)
+```
 ]]
 local insert = table.insert
 local floor = math.floor
-function snus_table.binsearch(tbl, value)
+local function binsearch(tbl, value, func)
 	local len = #tbl
+	if len == 0 then
+		return nil
+	end
+	
 	local a, b = 1, len
 	local diff = b - a
 	while diff > 8 do
 		local m = floor(a + diff * .5)
-		if tbl[m] > value then
-			b = m
+		if func then
+			if func(value, tbl[m], m) then
+				b = m
+			else
+				a = m
+			end
 		else
-			a = m
+			if tbl[m] > value then
+				b = m
+			else
+				a = m
+			end
 		end
 		diff = b - a
 	end
 	
 	for i = a, b do
-		if tbl[i] >= value then
-			return i, tbl[i]
+		if func then
+			if func(value, tbl[i], i) then
+				return i, tbl[i]
+			end
+		else
+			if tbl[i] >= value then
+				return i, tbl[i]
+			end
 		end
 	end
-	return len, tbl[len]
+	return len + 1, tbl[len + 1]
 end
+
+snus_table.binsearch = binsearch
 
 --[[!MD
 #### binsert
 Searches nearest larger element to given in sorted arrays and inserts value to it's position.
 ```lua
-stbl.binsert(table tbl, value value[, func comparefunction(value a, value b, int index)])
+table tbl, int index, value element = stbl.binsert(table tbl, value value[, func comparefunction(value a, value b, int index)])
 ```
-
-Compare function receives current table element, value to insert and current array index.
 ]]
 function snus_table.binsert(tbl, value, func)
 	local len = #tbl
-	local a, b = 1, len
-	local diff = b - a
-	while diff > 11 do
-		local m = floor(a + diff * .5)
-		if func and func(tbl[m], value, m) or tbl[m] >= value then
-			b = m
-		else
-			a = m
-		end
-		diff = b - a
+	if len == 0 then
+		tbl[1] = value
+		return tbl, 1, value
 	end
 	
-	for i = a, b do
-		if func and func(tbl[i], value, m) or tbl[i] >= value then
-			return insert(tbl, i, value)
-		end
-	end
-	return insert(tbl, len, value)
+	local idx = binsearch(tbl, value, func)
+	insert(tbl, idx, value)
+	return tbl, len, value
 end
+
 
 --[[!MD
 #### str

@@ -259,22 +259,27 @@ out = stbl.update(tblA, tblB)
 
 
 #### binsearch
-Searches nearest larger element to given in sorted arrays
+Finds the closest greater element to a given element in a sorted array
 ```lua
-int index, value element = stbl.binsearch(table tbl, value value)
+int index, value element = stbl.binsearch(table tbl, value value[, func comparefunction(value a, value b, int index)])
 ```
 
-If you want to keep array sorted, you may `table.insert` your value to given index.
-Tip: `table.insert(tbl, stbl.binsearch(tbl, value), value)`
+Default comparefunction is like
+```lua
+function(a, b) a < b end
+```
+
+You may use it with `table.insert` to keep array sorted:
+```lua
+table.insert(tbl, stbl.binsearch(tbl, value), value)
+```
 
 
 #### binsert
 Searches nearest larger element to given in sorted arrays and inserts value to it's position.
 ```lua
-stbl.binsert(table tbl, value value[, func comparefunction(value a, value b, int index)])
+table tbl, int index, value element = stbl.binsert(table tbl, value value[, func comparefunction(value a, value b, int index)])
 ```
-
-Compare function receives current table element, value to insert and current array index.
 
 
 #### str
