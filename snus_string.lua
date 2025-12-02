@@ -808,28 +808,27 @@ local function getlocalenv(level)
 	local env = setmetatable({}, {__index = getfenv and getfenv(level) or _ENV or _G})
 	while k do
 		i = i + 1
-		env[k] = v
+		env[k] = env[k] or v -- shadowing check
 		k, v = getlocal(level, i)
 	end
 	return env
 end
 
-
 local _replace, _env
 local function fmt1(key)
-	key = tonumber(key) or key
-	return _replace and _replace[key] or _env[key] or nil
+	local nkey = tonumber(key) or key
+	return _replace and _replace[nkey] or _env[key] or nil
 end
 
 local function fmt2(key, fmt)
-	key = tonumber(key) or key
-	local word = _replace and _replace[key] or _env[key]
+	local nkey = tonumber(key) or key
+	local word = _replace and _replace[nkey] or _env[key]
 	return word and fmt:format(word) or nil
 end
 
 function snus_string:f(t)
 	_replace, _env = t, getlocalenv(3)
-	local result = self:gsub("{(%w+)}", fmt1):gsub( "{(%w+):(.-)}", fmt2)
+	local result = self:gsub("{([^ :]-)}", fmt1):gsub( "{([^ :]-):(.-)}", fmt2)
 	_replace, _env = nil, nil
 	return result
 end
@@ -862,3 +861,4 @@ end
 if package.config:sub(1, 1) == "\\" then
 	--os.execute("chcp 65001")
 end
+
