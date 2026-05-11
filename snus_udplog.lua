@@ -18,7 +18,7 @@ local function getFamilyHostName(address, family)
 end
 
 local function isIPv4(address)
-	return not not host:find("^%d+%.%d+%.%d+%.%d+$")
+	return not not address:find("^%d+%.%d+%.%d+%.%d+$")
 end
 
 local function isIPv6(address)
@@ -64,7 +64,7 @@ local function client(host, port, family)
 	
 	local mode = family == "inet6" and "udp6" or "udp4"
 	local udp = (socket[mode] or socket.udp)()
-	-- print(udp:setpeername(host, port))
+	udp:setpeername(host, port)
 	-- print("sock stats: ", udp:getpeername())
 	
 	return function(...)
@@ -116,7 +116,7 @@ for i, v in ipairs(arg) do
 	end
 	
 	if v == "h" or v == "-h" or v == "/h" then
-		host = assert(arg[i + 1]), "Host address should be given")
+		host = assert(arg[i + 1], "Host address should be given")
 	end
 
 	if v == "p" or v == "-p" or v == "/p" then
